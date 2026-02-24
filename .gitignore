@@ -1,0 +1,18 @@
+# === SECRETS — NEVER COMMIT ===
+.env
+*.env
+.env.*
+
+# === PYTHON CACHE — NOT SOURCE CODE ===
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+
+# === LOGS — RUNTIME ARTIFACTS, NOT SOURCE ===
+logs/*.log
+
+# === VIRTUAL ENVIRONMENT — MACHINE-SPECIFIC ===
+venv/
+.venv/
+env/
