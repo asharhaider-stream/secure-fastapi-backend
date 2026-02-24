@@ -7,6 +7,7 @@ import structlog
 from fastapi import FastAPI
 from app.config import settings
 from app.logging_config import setup_logging
+from app.routers import auth_router
 
 
 @asynccontextmanager
@@ -29,6 +30,8 @@ app = FastAPI(
     redoc_url="/redoc" if not settings.is_production else None,
     lifespan=lifespan,
 )
+
+app.include_router(auth_router.router)
 
 
 @app.get("/health", tags=["System"])
