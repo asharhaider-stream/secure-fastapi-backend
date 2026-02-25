@@ -28,6 +28,9 @@ class Settings(BaseSettings):
     
     log_level: str = "INFO"
     log_file: str = "logs/app.log"
+    
+    groq_api_key: str
+    groq_model: str = "llama-3.3-70b-versatile"
 
     @property
     def is_production(self) -> bool:

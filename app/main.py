@@ -7,8 +7,10 @@ import structlog
 from fastapi import FastAPI
 from app.config import settings
 from app.logging_config import setup_logging
+from app.routers import agent_router
 from app.routers import auth_router
 from app.routers import users_router
+from prometheus_fastapi_instrumentator import Instrumentator
 
 
 @asynccontextmanager
@@ -31,9 +33,10 @@ app = FastAPI(
     redoc_url="/redoc" if not settings.is_production else None,
     lifespan=lifespan,
 )
-
+Instrumentator().instrument(app).expose(app)
 app.include_router(auth_router.router)
 app.include_router(users_router.router)
+app.include_router(agent_router.router)
 
 
 @app.get("/health", tags=["System"])
