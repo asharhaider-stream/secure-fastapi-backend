@@ -5,6 +5,7 @@ Register, Login, and current user info
 
 from fastapi import APIRouter, HTTPException, Depends, status
 from app.schemas import UserRegister, UserResponse, Token, UserLogin
+from fastapi.security import OAuth2PasswordRequestForm
 from app.models import User, UserRole, fake_users_db
 from app.auth import (
     hash_password,
@@ -48,13 +49,13 @@ async def register(user_data: UserRegister):
 
 
 @router.post("/login", response_model=Token)
-async def login(user_data: UserLogin):
-    user = authenticate_user(user_data.username, user_data.password)
+async def login(form_data: OAuth2PasswordRequestForm = Depends()):
+    user = authenticate_user(form_data.username, form_data.password)
 
     if not user:
         logger.warning(
             "failed_login_attempt",
-            username=user_data.username
+            username=form_data.username
         )
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
